@@ -1,0 +1,103 @@
+{
+  "expo": {
+    "name": "AI Recaps Maker",
+    "slug": "ai-recaps-maker-and-auto-post-android-app",
+    "version": "1.0.0",
+    "sdkVersion": "54.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "scheme": "airecaps",
+    "splash": {
+      "image": "./assets/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ylbs.airecapsmaker",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "יצירת סיכומים דורשת גישה לסרטונים מהגלריה",
+        "NSCameraUsageDescription": "יצירת סיכומים דורשת גישה למצלמה",
+        "NSMicrophoneUsageDescription": "יצירת סיכומים עם קול דורשת גישה למיקרופון"
+      }
+    },
+    "android": {
+      "package": "com.ylbs.airecapsmaker",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "CAMERA",
+        "RECORD_AUDIO"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/images/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-notifications",
+      "expo-document-picker",
+      "./plugins/withGradleJvmArgs",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "minSdkVersion": 23,
+            "buildToolsVersion": "35.0.0",
+            "kotlinVersion": "1.9.24",
+            "packagingOptions": {
+              "pickFirst": [
+                "**/libc++_shared.so",
+                "**/libfbjni.so",
+                "**/libgoogle-play-services-measurement*.so"
+              ],
+              "exclude": [
+                "META-INF/AL2.0",
+                "META-INF/LGPL2.1"
+              ]
+            },
+            "extraMavenRepos": [
+              "https://maven.google.com"
+            ],
+            "enableProguardInReleaseBuilds": false,
+            "enableShrinkResourcesInReleaseBuilds": false
+          },
+          "ios": {
+            "deploymentTarget": "15.1"
+          }
+        }
+      ],
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-9953179201685717~4175960790",
+          "iosAppId": "ca-app-pub-9953179201685717~6597950204"
+        }
+      ]
+    ],
+    "newArchEnabled": false,
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "0455a558-577b-4c2f-82ce-94a70b0134c1"
+      }
+    },
+    "owner": "yaaskovbs"
+  }
+}

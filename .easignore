@@ -1,0 +1,49 @@
+# EAS Build Ignore File
+# Files and directories listed here will be excluded from EAS builds
+
+# Development
+node_modules/
+.expo/
+.expo-shared/
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Build artifacts
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+coverage/
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Misc
+google-service-account.json
+*.env.local
+*.env.development
+*.env.test

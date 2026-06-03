@@ -1,0 +1,84 @@
+# Screenshots Directory
+
+Place your app screenshots here for the README.md
+
+## Required Screenshots:
+
+### Main Screens
+- `home.png` - דף הבית
+- `login.png` - מסך התחברות
+- `signup.png` - מסך הרשמה
+- `gallery.png` - גלריית סיכומים
+- `settings.png` - הגדרות
+- `analytics.png` - ניתוח
+
+### Create Wizard (6 Steps)
+- `create-step1.png` - בחירת סוג קלט
+- `create-step2.png` - הגדרות מתקדמות
+- `create-step3.png` - העלאת קבצים
+- `create-step4.png` - עיבוד AI
+- `create-step5.png` - סקירה ועריכה
+- `create-step6.png` - הורדה ושיתוף
+
+### BYOK & AdMob
+- `byok.png` - הגדרות BYOK
+- `admob.png` - ניתוח AdMob
+
+## Screenshot Guidelines:
+
+### Size & Format
+- **Format**: PNG (recommended)
+- **Resolution**: 1080x1920 (Full HD portrait)
+- **Aspect Ratio**: 9:16 (mobile)
+- **Max Size**: 500 KB per image
+
+### Content
+- Clean UI (no personal data)
+- Light/Dark mode variants
+- RTL/LTR examples (Hebrew + English)
+- Real content (not lorem ipsum)
+
+### Tools
+- **Android**: ADB Screenshot
+  ```bash
+  adb shell screencap -p /sdcard/screenshot.png
+  adb pull /sdcard/screenshot.png
+  ```
+- **iOS**: Xcode Simulator
+- **Online Tools**: 
+  - [Mockuphone](https://mockuphone.com/)
+  - [Screely](https://www.screely.com/)
+  - [Device Frames](https://deviceframes.com/)
+
+### Optimization
+```bash
+# Install ImageMagick
+brew install imagemagick
+
+# Resize to 1080x1920
+magick convert input.png -resize 1080x1920 output.png
+
+# Compress
+magick convert input.png -quality 85 output.png
+```
+
+## Example Structure:
+
+```
+docs/screenshots/
+├── .gitkeep
+├── home.png
+├── login.png
+├── signup.png
+├── gallery.png
+├── settings.png
+├── analytics.png
+├── byok.png
+├── admob.png
+├── create-step1.png
+├── create-step2.png
+├── create-step3.png
+├── create-step4.png
+├── create-step5.png
+└── create-step6.png
+```
