@@ -26,6 +26,10 @@
       }
     },
 
+    "Development": {
+      "extends": "development"
+    },
+
     "preview": {
       "distribution": "internal",
       "android": {
