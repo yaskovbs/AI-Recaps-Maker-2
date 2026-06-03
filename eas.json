@@ -22,7 +22,8 @@
       },
       "env": {
         "EXPO_PUBLIC_ENV": "development",
-        "NODE_ENV": "development"
+        "NODE_ENV": "development",
+        "GRADLE_OPTS": "-Xmx3072m -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8"
       }
     },
 
@@ -85,7 +86,7 @@
       "env": {
         "EXPO_PUBLIC_ENV": "production",
         "NODE_ENV": "production",
-        "GRADLE_OPTS": "-Xmx4g -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8"
+        "GRADLE_OPTS": "-Xmx3072m -XX:MaxMetaspaceSize=512m -Dfile.encoding=UTF-8"
       }
     },
 

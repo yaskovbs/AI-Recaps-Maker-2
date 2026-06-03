@@ -85,6 +85,14 @@
           "iosAppId": "ca-app-pub-9953179201685717~6597950204"
         }
       ]
+      ,
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "merchant.com.ylbs.airecapsmaker",
+          "enableGooglePay": true
+        }
+      ]
     ],
     "newArchEnabled": false,
     "experiments": {

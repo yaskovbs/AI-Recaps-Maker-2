@@ -1,13 +1,15 @@
-const { withGradleProperties, withAndroidManifest, withProjectBuildGradle } = require('expo/config-plugins');
+const { withGradleProperties, withAndroidManifest, withProjectBuildGradle } = require('@expo/config-plugins');
 
 /**
  * Config plugin:
- * 1. Increases JVM heap for Gradle daemon (prevents OOM during build)
+ * 1. Sets a memory-safe JVM heap for the Gradle daemon (prevents OOM/"Daemon
+ *    disappeared / Killed" on EAS default Android workers, which have ~4GB RAM).
  * 2. Adds android:largeHeap="true" to AndroidManifest — allows app to use
  *    extended heap at runtime, enabling large file (2GB+) operations.
+ * 3. Pins Kotlin JVM target to 17 for native modules (e.g. google-mobile-ads).
  */
 module.exports = function withGradleJvmArgs(config) {
-  // Step 1 — Gradle JVM args
+  // Step 1 — Gradle JVM args + memory-constrained CI tuning
   config = withGradleProperties(config, (cfg) => {
     const props = cfg.modResults;
     const filtered = props.filter(
@@ -15,13 +17,18 @@ module.exports = function withGradleJvmArgs(config) {
     );
     filtered.push({
       type: 'property',
+      // Right-sized for EAS default Android workers (~4GB RAM total).
+      // A 4GB heap + 2GB metaspace + parallel workers OOM-kills the daemon.
       key: 'org.gradle.jvmargs',
-      value: '-Xmx4096m -XX:MaxMetaspaceSize=2048m -XX:+HeapDumpOnOutOfMemoryError',
+      value: '-Xmx3072m -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8',
     });
-    // Enable parallel builds and caching for faster CI
+    // Tune Gradle for memory-constrained CI workers
     const removeKeys = [
       'org.gradle.parallel', 'org.gradle.caching', 'org.gradle.daemon',
+      'org.gradle.workers.max',
+      'org.gradle.configureondemand',
       'kotlin.jvm.target.validation.mode',
+      'kotlin.daemon.jvmargs',
       'kapt.use.worker.api',
       'android.suppressUnsupportedCompileSdk',
       'kotlin.incremental',
@@ -30,9 +37,15 @@ module.exports = function withGradleJvmArgs(config) {
       (item) => !(item.type === 'property' && removeKeys.includes(item.key))
     );
     cleaned.push(
-      { type: 'property', key: 'org.gradle.parallel', value: 'true' },
+      // Disable parallel: parallel spawns multiple JVM workers that each
+      // consume memory and cause OOM ("Daemon disappeared / Killed") on EAS.
+      { type: 'property', key: 'org.gradle.parallel', value: 'false' },
       { type: 'property', key: 'org.gradle.caching', value: 'true' },
-      { type: 'property', key: 'org.gradle.daemon', value: 'true' },
+      { type: 'property', key: 'org.gradle.daemon', value: 'false' },
+      // Cap concurrent worker processes to keep memory usage bounded
+      { type: 'property', key: 'org.gradle.workers.max', value: '2' },
+      // Constrain the Kotlin compile daemon's heap too (it's a separate JVM)
+      { type: 'property', key: 'kotlin.daemon.jvmargs', value: '-Xmx1536m -XX:MaxMetaspaceSize=512m' },
       // Suppress JVM target mismatch errors from react-native-google-mobile-ads
       { type: 'property', key: 'kotlin.jvm.target.validation.mode', value: 'IGNORE' },
       // Disable Kotlin worker API to avoid compilation issues on EAS
@@ -46,7 +59,7 @@ module.exports = function withGradleJvmArgs(config) {
     return cfg;
   });
 
-  // Step 2 — AndroidManifest: largeHeap + file provider URI permissions
+  // Step 2 — AndroidManifest: largeHeap + cleartext for dev
   config = withAndroidManifest(config, (cfg) => {
     const app = cfg.modResults.manifest.application?.[0];
     if (app) {
@@ -58,7 +71,7 @@ module.exports = function withGradleJvmArgs(config) {
     return cfg;
   });
 
-  // Step 3 — Patch allprojects Kotlin JVM target for react-native-google-mobile-ads
+  // Step 3 — Patch subprojects Kotlin JVM target for react-native-google-mobile-ads
   config = withProjectBuildGradle(config, (cfg) => {
     const contents = cfg.modResults.contents;
     const patch = `
