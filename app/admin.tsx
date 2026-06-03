@@ -204,15 +204,6 @@ export default function AdminDashboardScreen() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Guard: non-admin
-  if (!user?.isAdmin) {
-    return (
-      <View style={[styles.rootContainer, { paddingTop: insets.top }]}>
-        <AccessDeniedScreen />
-      </View>
-    );
-  }
-
   const fetchData = useCallback(async () => {
     try {
       setError(null);
@@ -246,6 +237,15 @@ export default function AdminDashboardScreen() {
     await fetchData();
     setIsRefreshing(false);
   }, [fetchData]);
+
+  // Guard: non-admin (must be after all hooks)
+  if (!user?.isAdmin) {
+    return (
+      <View style={[styles.rootContainer, { paddingTop: insets.top }]}>
+        <AccessDeniedScreen />
+      </View>
+    );
+  }
 
   // ── Derived stats ──
   const totalApiCalls = data?.apiUsage.length ?? 0;
