@@ -3,7 +3,7 @@
     "name": "AI Recaps Maker",
     "slug": "ai-recaps-maker-and-auto-post-android-app",
     "version": "1.0.0",
-    "sdkVersion": "54.0.0",
+    "sdkVersion": "53.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -55,7 +55,7 @@
             "targetSdkVersion": 35,
             "minSdkVersion": 23,
             "buildToolsVersion": "35.0.0",
-            "kotlinVersion": "1.9.24",
+            "kotlinVersion": "2.1.0",
             "packagingOptions": {
               "pickFirst": [
                 "**/libc++_shared.so",
@@ -74,7 +74,7 @@
             "enableShrinkResourcesInReleaseBuilds": false
           },
           "ios": {
-            "deploymentTarget": "15.1"
+            "deploymentTarget": "16.4"
           }
         }
       ],
@@ -84,8 +84,7 @@
           "androidAppId": "ca-app-pub-9953179201685717~4175960790",
           "iosAppId": "ca-app-pub-9953179201685717~6597950204"
         }
-      ]
-      ,
+      ],
       [
         "@stripe/stripe-react-native",
         {
